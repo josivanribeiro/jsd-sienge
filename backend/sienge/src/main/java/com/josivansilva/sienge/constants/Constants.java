@@ -33,7 +33,6 @@ public class Constants {
 	 * Freight carried constants. 
 	 */
 	public static int FREIGHT_CARRIED_5 = 5;
-	public static int FREIGHT_CARRIED_8 = 8;
 	public static double INCREMENT_PER_KILOMETER_WHEELED = 0.02;
 			
 }
