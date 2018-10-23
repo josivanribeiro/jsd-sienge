@@ -20,7 +20,7 @@ public class TransportationCostServiceTests {
 
 	private TransportationCostService transportationCostService = new TransportationCostService();
 	
-	//@Test
+	@Test
 	public void testCalculatesTransportationCostA () {
 	
 		int distanceOnPavedHighway = 100; 
@@ -40,7 +40,7 @@ public class TransportationCostServiceTests {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testCalculatesTransportationCostB () {
 	
 		int distanceOnPavedHighway = 0; 
@@ -60,7 +60,7 @@ public class TransportationCostServiceTests {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testCalculatesTransportationCostC () {
 	
 		int distanceOnPavedHighway = 0; 
@@ -80,7 +80,7 @@ public class TransportationCostServiceTests {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testCalculatesTransportationCostD () {
 	
 		int distanceOnPavedHighway = 80; 
@@ -100,7 +100,7 @@ public class TransportationCostServiceTests {
 		
 	}
 	
-	//@Test
+	@Test
 	public void testCalculatesTransportationCostE () {
 	
 		int distanceOnPavedHighway = 50; 
@@ -116,7 +116,7 @@ public class TransportationCostServiceTests {
 																				   );
 		System.out.println (result);
 		assertNotNull (result);	
-		assertTrue (result.toString().equals("57.60"));
+		assertTrue (result.toString().equals("47.88"));
 		
 	}	
 	
