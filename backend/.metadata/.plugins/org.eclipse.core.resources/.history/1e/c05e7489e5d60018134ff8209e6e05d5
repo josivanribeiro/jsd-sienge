@@ -1,0 +1,19 @@
+/* Copyright josivanSilva (Developer); 2018 */
+package com.josivansilva.sienge.service;
+
+import java.math.BigDecimal;
+
+/**
+ * Transportation Cost service class.
+ * 
+ * @author josivan@josivansilva.com
+ *
+ */
+public class TransportationCostService {
+ 
+	
+	public BigDecimal calculatesTransportationCost () {
+		return null;
+	}  
+	
+}

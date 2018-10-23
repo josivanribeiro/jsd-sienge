@@ -1,0 +1,12 @@
+/* Copyright josivanSilva (Developer); 2018 */
+package com.josivansilva.sienge.resource;
+
+/**
+ * Transportation Cost service class.
+ * 
+ * @author josivan@josivansilva.com
+ *
+ */
+public class TransportationCostService {
+
+}
