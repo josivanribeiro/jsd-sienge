@@ -53,7 +53,7 @@ public class TransportationCostService {
 			
 		}
 		
-		if (freightCarried >= Constants.FREIGHT_CARRIED_8) {
+		if (freightCarried > Constants.FREIGHT_CARRIED_5) {
 			int freightCarriedResult = freightCarried - Constants.FREIGHT_CARRIED_5;
 			
 			double totalIncrementPerKilometerWheeled = freightCarriedResult * Constants.INCREMENT_PER_KILOMETER_WHEELED;
@@ -62,6 +62,8 @@ public class TransportationCostService {
 			result = result.add (new BigDecimal(totalDistance).multiply (new BigDecimal(totalIncrementPerKilometerWheeled)));
 			
 		}		
+		
+		result = result.setScale (2, BigDecimal.ROUND_HALF_UP);
 		
 		return result;
 	}  
