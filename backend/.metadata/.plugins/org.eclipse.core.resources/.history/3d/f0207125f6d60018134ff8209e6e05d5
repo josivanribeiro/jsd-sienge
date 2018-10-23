@@ -1,0 +1,26 @@
+/* Copyright josivanSilva (Developer); 2018 */
+package com.josivansilva.sienge.service;
+
+/**
+ * Transportation cost service unit test class.
+ * 
+ * @author josivan@josivansilva.com
+ *
+ */
+public class TransportationCostServiceTests {
+
+	private TransportationCostService transportationCostService = new TransportationCostService();
+	
+	
+	
+	public void testCalculatesTransportationCostA () {
+	
+		int distanceOnPavedHighway = 100; 
+		int distanceOnUnpavedHighway = 0;
+		int vehicleUsed = Constants.
+		int freightCarried
+		
+	} 
+	
+	
+}

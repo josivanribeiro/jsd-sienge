@@ -61,7 +61,8 @@ public class TransportationCostService {
 			int totalDistance = distanceOnPavedHighway + distanceOnUnpavedHighway;
 			result = result.add (new BigDecimal(totalDistance).multiply (new BigDecimal(totalIncrementPerKilometerWheeled)));
 			
-		}		
+		}
+		
 		
 		return result;
 	}  
