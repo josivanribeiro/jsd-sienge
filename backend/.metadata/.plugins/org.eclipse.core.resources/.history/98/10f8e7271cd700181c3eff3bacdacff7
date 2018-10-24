@@ -1,0 +1,5 @@
+package com.josivansilva.filter;
+
+public class CORSFilter {
+
+}
