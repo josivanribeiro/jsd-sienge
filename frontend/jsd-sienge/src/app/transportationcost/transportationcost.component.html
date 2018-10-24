@@ -1,94 +1,31 @@
 <div class="container" style="padding: 20px;">
-  <ng-container *ngIf="isAdd">
-    <h1 class="mb-3">Adicionar Cliente</h1>
-  </ng-container>
-  <ng-container *ngIf="isEdit">
-    <h1 class="mb-3">Editar Cliente</h1>
-  </ng-container>    
-  <form class="form-horizontal" role="form" novalidate [formGroup]="customerForm">  
-      <div class="form-group" 
-        [ngClass]="{
-        'has-danger': customerName.invalid && (customerName.dirty || customerName.touched),
-        'has-success': customerName.valid && (customerName.dirty || customerName.touched)
-        }">        
-        <label for="contain">Nome *</label>
-        <input class="form-control" type="text" maxlength="255" formControlName="customerName" required trim="blur">
-        <div class="form-control-feedback" style="width: 100%; position: relative; text-align:left;" *ngIf="customerName.errors && (customerName.dirty || customerName.touched)">
-            <p *ngIf="customerName.errors.required">É necessário preencher o campo Nome.</p>
-        </div> 
+   <h1 class="mb-3">Calcular Custos de Transporte</h1>
+   <form class="form-horizontal" role="form" novalidate>  
+      <div class="form-group">        
+        <label for="contain">Distância em Rodovia Pavimentada</label>
+        <input class="form-control" [(ngModel)]="distanceOnPavedHighway" value={{distanceOnPavedHighway}} type="text" maxlength="50" [ngModelOptions]="{standalone: true}">         
+      </div>
+      <div class="form-group">        
+        <label for="contain">Distância em Rodovia Não Pavimentada</label>
+        <input class="form-control" [(ngModel)]="distanceOnUnpavedHighway" type="text" maxlength="50" [ngModelOptions]="{standalone: true}">      
       </div>
       <div class="form-group">
-          <label for="contain">Tipo *</label><br/>
-          <ng-container *ngFor="let customerType of customerTypes">
-            <label class="radio-inline"><input type="radio" name="customerType" formControlName="customerType" value="{{customerType.value}}" (click)="selectCustomerType(customerType.value)" [checked]="customerType.value == selectedCustomerType.value"> {{customerType.description}} </label>&nbsp;
+          <label for="contain">Veículo Utilizado</label><br/>
+          <ng-container *ngFor="let vehicleUsed of vehiclesUsed">
+            <label class="radio-inline"><input type="radio" name="vehicleUsed" value="{{vehicleUsed.value}}" (click)="selectVehicleUsed(vehicleUsed.value)"> {{vehicleUsed.description}} </label>&nbsp;
           </ng-container>
       </div>
-      <div class="form-group" 
-        [ngClass]="{
-        'has-danger': customerMonthlyIncome.invalid && (customerMonthlyIncome.dirty || customerMonthlyIncome.touched),
-        'has-success': customerMonthlyIncome.valid && (customerMonthlyIncome.dirty || customerMonthlyIncome.touched)
-        }">
-        <label for="contain">Rendimento Mensal *</label>
-        <input class="form-control" type="text" (keyup)="checkRisk(customerMonthlyIncome.value)" formControlName="customerMonthlyIncome" required trim="blur">
-        <div class="form-control-feedback" style="width: 100%; position: relative; text-align:left;" *ngIf="customerMonthlyIncome.errors && (customerMonthlyIncome.dirty || customerMonthlyIncome.touched)">
-            <p *ngIf="customerMonthlyIncome.errors.required">É necessário preencher o Rendimento Mensal.</p>
-        </div>
+      <div class="form-group">
+        <label for="contain">Carga Transportada</label>
+        <input class="form-control" type="text" [(ngModel)]="freightCarried" [ngModelOptions]="{standalone: true}">
       </div>
       <div class="form-group">
-        <label for="contain">Risco</label>
-        <input class="form-control" type="text" formControlName="customerRisk" required [readonly]="true">
+        <label for="contain">Custo do Transporte</label>
+        <input class="form-control" type="text" [(ngModel)]="calculationResult" [ngModelOptions]="{standalone: true}" [readonly]="true">
       </div>
-      <div class="form-group"
-        [ngClass]="{
-        'has-danger': customerAddress.invalid && (customerAddress.dirty || customerAddress.touched),
-        'has-success': customerAddress.valid && (customerAddress.dirty || customerAddress.touched)
-        }">
-        <label for="contain">Endereço *</label>
-        <input class="form-control" type="text" maxlength="355" formControlName="customerAddress" required trim="blur">
-        <div class="form-control-feedback" style="width: 100%; position: relative; text-align:left;" *ngIf="customerMonthlyIncome.errors && (customerMonthlyIncome.dirty || customerMonthlyIncome.touched)">
-            <p *ngIf="customerAddress.errors.required">É necessário preencher o Endereço.</p>
-        </div>
-      </div>
-      <div class="form-group" *ngIf="selectedCustomerType.value == 'Special'">
-        <label for="contain">Total do Patrimônio *</label>
-        <input class="form-control" type="text" formControlName="customerTotalPatrimony" required trim="blur">
-      </div>
-      <div class="form-group" *ngIf="selectedCustomerType.value == 'Potential'">
-        <label for="contain">Total de Dívidas *</label>
-        <input class="form-control" type="text" formControlName="customerCurrentDebts" required trim="blur">
-      </div>
-      <div class="form-group" *ngIf="selectedCustomerType.value == 'Common'">
-        <label class="customcheck">
-            <input type="checkbox" formControlName="customerEmployed" trim="blur">
-            <span class="checkmark"></span> Atualmente Empregado
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary" (click)="onInsertCustomer()" style="cursor: pointer;" *ngIf="isAdd">
-        <span class="glyphicon glyphicon-search" aria-hidden="true">Cadastrar</span>
-      </button>
-      <button type="submit" class="btn btn-primary" (click)="onUpdateCustomer()" style="cursor: pointer;" *ngIf="isEdit">
-          <span class="glyphicon glyphicon-search" aria-hidden="true">Alterar</span>
-      </button>
+      <button type="submit" class="btn btn-primary" (click)="calculatesTransportationCost()" style="cursor: pointer;">
+        <span class="glyphicon glyphicon-search" aria-hidden="true">Calcular</span>
+      </button>      
       <br/>
     </form>    
-</div>
-<div class="container" *ngIf="isEdit">
-    <h1 class="mb-3">Simulação de Empréstimo</h1>
-    <form class="form-horizontal mb-3" role="form">
-        <div class="form-group">        
-          <label for="contain">Valor do Empréstimo *</label>
-          <input class="form-control" type="text" [(ngModel)]="loanValue" name="loanValue" [ngModelOptions]="{standalone: true}">         
-        </div>
-        <div class="form-group">        
-          <label for="contain">Duração do Empréstimo (meses) *</label>
-          <input class="form-control" type="text" maxlength="3" [(ngModel)]="parcel" name="parcel" [ngModelOptions]="{standalone: true}">
-        </div>
-        <div class="form-group">        
-          <label for="contain">Valor da Prestação</label>
-          <input class="form-control" type="text" [readonly]="true" [(ngModel)]="calculationResult" name="calculationResult" [ngModelOptions]="{standalone: true}">         
-        </div>
-        <button type="submit" class="btn btn-primary" (click)="onSimulatesLoan()" style="cursor: pointer;">
-          <span class="glyphicon glyphicon-search" aria-hidden="true">Calcular</span>
-        </button>        
-    </form>
 </div>

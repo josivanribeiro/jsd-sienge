@@ -2,10 +2,10 @@ README
 
 Backend
 
-1) Instalar um servidor de aplicação (Tomcat, Jboss, etc.)
+1) Instalar um servidor de aplicação (Jboss, Tomcat, etc.)
 2) Executar um clean install no maven para gerar o arquivo jsd-sienge.war;
 3) Realizar o deployment do WAR no servidor de aplicação;
-4) Acessar os serviços REST disponíveis na url http://localhost:8080/jsd-sienge/rest/transportationcosts
+4) Acessar os serviços REST disponíveis na url http://localhost:8080/jsd-sienge/rest/transportationCost
 
 Frontend
 

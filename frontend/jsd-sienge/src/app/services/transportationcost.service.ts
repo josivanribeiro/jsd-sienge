@@ -16,14 +16,19 @@ export class TransportationCostService {
     private baseUrl: string;
 
     constructor (private http: HttpClient) {
-        this.baseUrl = "http://localhost:8080/jsd-sienge/rest";        
+        this.baseUrl = "http://localhost:8080/jsd-sienge/rest/transportationCost";        
     }
 
     /** 
-    * Simulates the loan.
+    * Calculates the transportation cost.
     */
-   public calculatesTransportationCost (parcel, loanValue, customerRisk) {                 
-    return this.http.get<Response> (this.baseUrl + '/calculatesTransportationCost/' + parcel + '/' + loanValue + '/' + customerRisk).pipe(map((res) => res));
+   public calculatesTransportationCost (
+                                         distanceOnPavedHighway, 
+                                         distanceOnUnpavedHighway,
+                                         vehicleUsed,
+                                         freightCarried
+                                       ) {                 
+    return this.http.get<Response> (this.baseUrl + '/calculatesTransportationCost/' + distanceOnPavedHighway + '/' + distanceOnUnpavedHighway + '/' + vehicleUsed + '/' + freightCarried).pipe(map((res) => res));
    }
 
 }

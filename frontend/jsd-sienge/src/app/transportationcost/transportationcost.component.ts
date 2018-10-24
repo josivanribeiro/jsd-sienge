@@ -1,13 +1,11 @@
 /* Copyright josivanSilva (Developer); 2018 */
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransportationCostService } from '../services/transportationcost.service';
-import { CustomerType} from './customerType';
+import { VehicleUsed} from './vehicleUsed';
 import { Overlay } from 'ngx-modialog';
 import { Modal } from 'ngx-modialog/plugins/bootstrap';
 import { Functions } from '../util/functions';
-import { Constants } from '../util/constants';
 
 /**
  * Transportation Cost component class.
@@ -22,33 +20,18 @@ import { Constants } from '../util/constants';
 export class TransportationCostComponent implements OnInit {
 
   /* Page form attributes */
-  customerForm: FormGroup;
-  customerId: string;
-  customerName: FormControl;
-  customerType: FormControl;
-  customerMonthlyIncome: FormControl;
-  customerRisk: FormControl;
-  customerAddress: FormControl;
-  customerTotalPatrimony: FormControl;
-  customerCurrentDebts: FormControl;
-  customerEmployed: FormControl;
+  distanceOnPavedHighway: number;
+  distanceOnUnpavedHighway: number;
+  freightCarried: number;
+  
+  calculationResult: string;
 
-  loanValue: number;
-  parcel: number;
-  calculationResult: number;
-
-  customerTypes = [
-    new CustomerType ("Special", "Especial"),
-    new CustomerType ("Potential", "Potencial"),
-    new CustomerType ("Common", "Comum"),
+  vehiclesUsed = [
+    new VehicleUsed (1, "Caminhão Baú"),
+    new VehicleUsed (2, "Caminhão Caçamba"),
+    new VehicleUsed (3, "Carreta"),
   ];
-  selectedCustomerType: CustomerType = new CustomerType ("","");
-
-  /* Edit mode attributes */
-  isAdd: boolean = false;
-  isEdit: boolean = false;
-
-  subscribe: any;
+  selectedVehicleUsed: VehicleUsed = new VehicleUsed (null, "");
 
   constructor (private transportationCostService: TransportationCostService,              
                private activatedRoute: ActivatedRoute,
@@ -57,67 +40,45 @@ export class TransportationCostComponent implements OnInit {
 
   ngOnInit() {
     
-    this.createFormControls();
-    this.createForm();    
-
   }
 
   /** 
-  * Simulates a loan.
+  * Calculates transportation cost.
   */
- public onSimulatesLoan () {
+ public calculatesTransportationCost () {
   
-  console.log ("this.parcel: " + this.parcel);
-  console.log ("this.loanValue: " + this.loanValue);
-  console.log ("this.customerRisk.value: " + this.customerRisk.value);
+  console.log ("this.distanceOnPavedHighway: " + this.distanceOnPavedHighway);
+  console.log ("this.distanceOnUnpavedHighway: " + this.distanceOnUnpavedHighway);
+  console.log ("this.selectedVehicleUsed.value: " + this.selectedVehicleUsed.value);
+  console.log ("this.freightCarried: " + this.freightCarried);
 
-  if (this.parcel == null
-        || this.loanValue == null
-        || this.customerRisk.value == null) {
-    Functions.createModalAlert (this.modal, 'É necessário preencher o Valor e a Duração do Empréstimo.');
+  if ((this.distanceOnPavedHighway == null
+        && this.distanceOnUnpavedHighway == null)
+        || this.selectedVehicleUsed == null
+        || this.freightCarried == null) {
+    Functions.createModalAlert (this.modal, 'É necessário preencher os campos Distância em Rodovia Pavimentada ou Distância em Rodovia Não Pavimentada, Veículo Utilizado e Carga Transportada.');
     return;
   }
-  
-  this.transportationCostService.calculatesTransportationCost (this.parcel, this.loanValue, this.customerRisk.value).subscribe(data => {
-    this.calculationResult = parseFloat (data.toString());     
+
+  this.distanceOnPavedHighway = this.distanceOnPavedHighway == undefined ? 0 : this.distanceOnPavedHighway; 
+  this.distanceOnUnpavedHighway = this.distanceOnUnpavedHighway == undefined ? 0 : this.distanceOnUnpavedHighway;
+
+  this.transportationCostService.calculatesTransportationCost (
+                                                                this.distanceOnPavedHighway, 
+                                                                this.distanceOnUnpavedHighway,
+                                                                this.selectedVehicleUsed.value,
+                                                                this.freightCarried
+                                                              ).subscribe(data => {
+    this.calculationResult = new Number(data).toFixed(2);
+    console.log (this.calculationResult);
   });
 }
 
  /** 
-  * Creates the form controls.
-  */
- private createFormControls() {
-  this.customerName = new FormControl('', Validators.required);
-  this.customerType = new FormControl('', Validators.required);
-  this.customerMonthlyIncome = new FormControl('', Validators.required);
-  this.customerRisk = new FormControl('', Validators.required);
-  this.customerAddress = new FormControl('', Validators.required);
-  this.customerTotalPatrimony = new FormControl();
-  this.customerCurrentDebts = new FormControl();
-  this.customerEmployed = new FormControl();  
+* Selects a vehicle used. 
+*/
+ public selectVehicleUsed (value) {
+  this.selectedVehicleUsed = this.vehiclesUsed.filter((item)=> item.value == value)[0];  
  }
-
-/** 
-* Creates the form.
-*/
-private createForm() {
-  this.customerForm = new FormGroup({
-    customerName: this.customerName,
-    customerType: this.customerType,
-    customerMonthlyIncome: this.customerMonthlyIncome,
-    customerRisk: this.customerRisk,
-    customerAddress: this.customerAddress,
-    customerTotalPatrimony: this.customerTotalPatrimony,
-    customerCurrentDebts: this.customerCurrentDebts,
-    customerEmployed: this.customerEmployed,
-  });
-} 
-
-/** 
-* Selects a customer type. 
-*/
- public selectCustomerType (value) {
-  this.selectedCustomerType = this.customerTypes.filter((item)=> item.value == value)[0];  
- } 
 
 }
